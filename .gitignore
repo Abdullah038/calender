@@ -37,3 +37,6 @@ next-env.d.ts
 
 google-service-account.json
 firebase-service-account.json
+
+ignore
+ignore2
