@@ -1,15 +1,9 @@
 // components/BarkerySection.tsx
 "use client";
 
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import useEmblaCarousel, {
-  EmblaOptionsType
-} from "embla-carousel-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { Atma } from "next/font/google";
 
 const atma = Atma({
@@ -18,20 +12,18 @@ const atma = Atma({
 });
 
 const PRODUCTS = [
-  { id: 1, label: "Pupcake",  imgSrc: "/images/homepage/cupcake.jpg" },
-  { id: 2, label: "Accessories",   imgSrc: "/images/homepage/collar.jpg" },
+  { id: 1, label: "Pupcake", imgSrc: "/images/homepage/cupcake.jpg" },
+  { id: 2, label: "Accessories", imgSrc: "/images/homepage/collar.jpg" },
   { id: 3, label: "Cakes", imgSrc: "/images/homepage/cake.webp" },
-
 ];
 
 export default function BarkerySection() {
-  // 1. set up Embla
-  const options: EmblaOptionsType = {
+  // 1. set up Embla (letting TS infer its options type)
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
     loop: true,
-  };
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  });
 
   // 2. state for prev/next disabled, selected index, and snaps
   const [prevDisabled, setPrevDisabled] = useState(true);
@@ -42,7 +34,7 @@ export default function BarkerySection() {
   // 3. callbacks to scroll
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-  const scrollTo   = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
+  const scrollTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
 
   // 4. sync state on init & selection change
   useEffect(() => {
@@ -64,52 +56,48 @@ export default function BarkerySection() {
     };
   }, [emblaApi]);
 
-  
-
-
   return (
-    
     <section className="bg-[#FDE8CE] rounded-[2rem] p-8 mt-12 mx-5">
-      {/* Title */}
+      {/* Styles specific to Embla */}
       <style jsx>{`
-.embla {
-  --slide-size-sm: 50%;
+        .embla {
+          --slide-size-sm: 50%;
+          --slide-size-lg: calc(100% / 3);
+        }
 
-  --slide-size-lg: calc(100% / 3);
-}
+        .embla__viewport {
+          overflow: hidden;
+        }
+        .embla__container {
+          display: flex;
+          align-items: flex-start;
+        }
+        .embla__slide {
+          flex: 0 0 100%;
+          min-width: 0;
+        }
+        .embla__container {
+          transition: height 0.2s;
+        }
 
-.embla__viewport {
-  overflow: hidden;
-}
-.embla__container {
-  display: flex;
-  align-items: flex-start; /* Add this */
-}
+        @media (min-width: 750px) {
+          .embla__slide {
+            flex: 0 0 var(--slide-size-sm);
+          }
+        }
+        @media (min-width: 1200px) {
+          .embla__slide {
+            flex: 0 0 var(--slide-size-lg);
+          }
+        }
+      `}</style>
 
-.embla__slide {
-  flex: 0 0 100%;
-  min-width: 0;
-}
-
-.embla__container {
-  transition: height 0.2s;
-}
-
-
-@media (min-width: 750px) {
-  .embla__slide {
-    flex: 0 0 var(--slide-size-sm);
-  }
-}
-@media (min-width: 1200px) {
-  .embla__slide {
-    flex: 0 0 var(--slide-size-lg);
-  }
-}
-
-`} </style>
-      <h2 className={`text-center text-4xl md:text-6xl font-bold ${atma.className}  text-primaryColor leading-tight`}>
-        Welcome to Barks & Beaches:<br />Barkery & Boutique
+      <h2
+        className={`text-center text-4xl md:text-6xl font-bold ${atma.className} text-primaryColor leading-tight`}
+      >
+        Welcome to Barks & Beaches:
+        <br />
+        Barkery & Boutique
       </h2>
       <p className="text-center text-xl text-primaryColor mt-2">
         Treats & Trends for Your Furry Best Friend
@@ -118,31 +106,31 @@ export default function BarkerySection() {
       {/* Embla viewport */}
       <div className="embla relative mt-8">
         <div className="embla__viewport overflow-hidden" ref={emblaRef}>
-          <div className="embla__container flex ">
+          <div className="embla__container flex">
             {PRODUCTS.map((p) => (
               <div
                 key={p.id}
-                className="embla__slide flex flex-col items-center  overflow-hidden gap-5"
+                className="embla__slide flex flex-col items-center overflow-hidden gap-5"
               >
                 <div className="bg-white rounded-2xl">
-                <div className="relative w-48 h-48 md:w-64 md:h-64">
-                  <Image
-                    src={p.imgSrc}
-                    alt={p.label}
-                    fill
-                    className="object-cover rounded-t-2xl"
-                  />
-                </div>
-                <div className="py-2 text-center font-semibold text-black">
-                  {p.label}
-                </div>
+                  <div className="relative w-48 h-48 md:w-64 md:h-64">
+                    <Image
+                      src={p.imgSrc}
+                      alt={p.label}
+                      fill
+                      className="object-cover rounded-t-2xl"
+                    />
+                  </div>
+                  <div className="py-2 text-center font-semibold text-black">
+                    {p.label}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Prev / Next */}
+        {/* Prev / Next buttons */}
         <button
           onClick={scrollPrev}
           disabled={prevDisabled}
@@ -165,8 +153,6 @@ export default function BarkerySection() {
         >
           →
         </button>
-
-
       </div>
 
       {/* Shop Now */}
