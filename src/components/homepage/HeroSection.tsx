@@ -42,36 +42,32 @@ const HeroSection = () => {
             <div className="flex flex-col items-center justify-between px-5">
               <h3 className="text-4xl pb-2">Bark & Beaches</h3>
               <h4 className={`${atma.className} text-6xl text-primaryColor`}>
-                Surf's Pup!
+                Surf&apos;s Pup!
               </h4>
-      
+
               <p className="py-8 max-w-96">
                 Welcome to Barks and Beaches Co., a deluxe staycation for your
                 beloved fur babies. As a husband and wife duo, we take great
-                pride in offering a five-star, all-inclusive experience without
-                the need for a hefty plane ticket. Our goal is to provide your
-                dog with memories that will last fur-ever.
+                pride in offering a five-star, all-inclusive experience
+                without the need for a hefty plane ticket. Our goal is to
+                provide your dog with memories that will last fur-ever.
               </p>
               <div className="flex  flex-row w-full justify-center gap-10 items-center pb-2">
-                {/* <button className="px-6 py-2 w-full text-xl border-2 border-primaryColor text-primaryColor rounded-full">
-                  About Us
-                </button> */}
-                
-                  <div className="md:flex gap-3 hidden ">
-                    <Image
-                      src="/facebook.png"
-                      alt="Facebook"
-                      width={25}
-                      height={25}
-                    />
-                    <Image
-                      src="/instagram.png"
-                      alt="Instagram"
-                      width={25}
-                      height={25}
-                    />
-                  </div>
-    
+                <div className="md:flex gap-3 hidden ">
+                  <Image
+                    src="/facebook.png"
+                    alt="Facebook"
+                    width={25}
+                    height={25}
+                  />
+                  <Image
+                    src="/instagram.png"
+                    alt="Instagram"
+                    width={25}
+                    height={25}
+                  />
+                </div>
+
                 <button className="px-6 py-2 text-xl bg-primaryColor text-white rounded-full">
                   Book Now
                 </button>
