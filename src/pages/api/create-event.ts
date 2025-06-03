@@ -7,7 +7,6 @@ import { db } from "../../lib/firebase-admin";
 import hubspotClient from "../../lib/hubspot";
 import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts";
 
-
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_OAUTH_CLIENT_ID,
   process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -129,11 +128,9 @@ export default async function handler(
 
   // Guard: end must be strictly after start
   if (initialEnd.getTime() <= initialStart.getTime()) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid time range: endTime must be after startTime.",
-      });
+    return res.status(400).json({
+      message: "Invalid time range: endTime must be after startTime.",
+    });
   }
 
   // ──────────────────────────────────────────────────────────────────────────────
@@ -305,29 +302,21 @@ export default async function handler(
 
       // 1) Create Google Calendar event — now with colorId from SERVICE_COLOR
       const colorId = SERVICE_COLOR[service] || "1";
-
       const googleEvent = await calendar.events.insert({
-        calendarId:
-          "2d74e531ba0ad48e996fd31992596cfef8aaf4787d381bb70b22650c99d9e9cb@group.calendar.google.com",
-        sendUpdates: "all", 
+        calendarId: "your-calendar-id",
+        sendUpdates: "all", // So Google sends the invite to you (organizer)
         requestBody: {
           summary: `[PENDING] ${service} – ${label} – ${contactFirstName} ${contactLastName}`,
           description: descriptionText,
           start: { dateTime: dayStart.toISOString(), timeZone: "UTC" },
           end: { dateTime: dayEnd.toISOString(), timeZone: "UTC" },
-          colorId,
-
-          // 1) Make the client a “guest” so Calendar knows who to email when we update/cancel:
-  attendees: [{ email: "abdullahshahzad038@gmail.com" }],
-
-
-          // 2) Mark it initially as “TENTATIVE,” so your own calendar shows a question mark:
           status: "tentative",
+          attendees: [
+            // 🧠 Only you, so you can confirm or decline
+            { email: "abs55ca@gmail.com" },
+          ],
         },
       });
-  
- 
-
 
       const eventId = googleEvent.data.id;
       if (!eventId) {
