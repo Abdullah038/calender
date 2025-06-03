@@ -22,7 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       requestBody: {
         id: uuidv4(), // unique ID for the channel
         type: "web_hook",
-        address: "https://localhost:3000/api/calendar/webhook", // this is your listener
+        address: "https://calender-woad.vercel.app/api/calendar/webhook",
+ // this is your listener
       },
     });
 
