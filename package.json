@@ -13,6 +13,7 @@
     "@fontsource/atma": "^5.2.6",
     "@heroicons/react": "^2.2.0",
     "@hubspot/api-client": "^13.0.0",
+    "@vercel/speed-insights": "^1.2.0",
     "emailjs-com": "^3.2.0",
     "embla-carousel": "^8.6.0",
     "embla-carousel-auto-height": "^8.6.0",
