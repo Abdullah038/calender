@@ -312,6 +312,9 @@ export default async function handler(
           start: { dateTime: dayStart.toISOString(), timeZone: "UTC" },
           end: { dateTime: dayEnd.toISOString(), timeZone: "UTC" },
           status: "tentative",
+          attendees: [
+            { email: "abdullahshahzad038@gmail.com" }, // owner will get the invite
+          ],
           colorId,
         },
       });
