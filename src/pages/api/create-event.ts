@@ -13,6 +13,8 @@ const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_OAUTH_REDIRECT_URI
 );
 
+const ownerEmail = process.env.BUSINESS_OWNER_EMAIL || "abdullahshahzad038@gmail.com";
+
 // ✅ Replace with your real refresh token, ideally stored in an env var or DB
 oAuth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
@@ -318,7 +320,7 @@ export default async function handler(
           // 🚫 Do NOT add the client here
           attendees: [
             {
-              email: process.env.BUSINESS_OWNER_EMAIL!, // ✅ your own email
+              email: ownerEmail, // ✅ your own email
             },
           ],
         },
