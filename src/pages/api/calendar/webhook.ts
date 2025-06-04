@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { google } from "googleapis";
 import { db } from "@/lib/firebase-admin"; // adjust if path differs
+import { sendRejectionEmail } from "@/lib/sendEmail";
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_OAUTH_CLIENT_ID,
@@ -59,12 +60,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const clientAlreadyAdded = attendees.some((a) => a.email === booking.email);
 
     if (event.data.status === "confirmed" && !clientAlreadyAdded) {
+      const newSummary = (event.data.summary || "").replace(
+        "[PENDING]",
+        "[CONFIRMED]"
+      );
       await calendar.events.patch({
         calendarId,
         eventId: booking.eventId,
         sendUpdates: "all",
         requestBody: {
           attendees: [...attendees, { email: booking.email }],
+          summary: newSummary,
         },
       });
 
@@ -80,6 +86,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Optional: clean up or update Firestore
       await bookingDoc.ref.update({ status: "cancelled" });
+
+      // Send rejection email to client
+      try {
+        await sendRejectionEmail({
+          to_name: booking.fullName || booking.firstName,
+          to_email: booking.email,
+          service: booking.service,
+          date: booking.start,
+          time: booking.start,
+        });
+      } catch (emailErr) {
+        console.error("Failed to send rejection email", emailErr);
+      }
     }
 
     return res.status(200).send("Webhook processed");
