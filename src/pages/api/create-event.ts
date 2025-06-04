@@ -403,3 +403,4 @@ export default async function handler(
       .json({ message: "Failed to create booking series." });
   }
 }
+
