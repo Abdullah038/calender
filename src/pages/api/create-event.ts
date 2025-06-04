@@ -318,7 +318,7 @@ export default async function handler(
           // 🚫 Do NOT add the client here
           attendees: [
             {
-              email: process.env.BUSINESS_OWNER_EMAIL, // ✅ your own email
+              email: process.env.BUSINESS_OWNER_EMAIL!, // ✅ your own email
             },
           ],
         },
