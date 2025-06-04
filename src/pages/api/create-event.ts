@@ -313,7 +313,7 @@ export default async function handler(
           status: "tentative",
           attendees: [
             // 🧠 Only you, so you can confirm or decline
-            { email: "abs55ca@gmail.com" },
+            { email: "abdullahshahzad083@gmail.com" },
           ],
         },
       });
