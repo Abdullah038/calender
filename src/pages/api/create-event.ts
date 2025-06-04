@@ -303,7 +303,7 @@ export default async function handler(
       // 1) Create Google Calendar event — now with colorId from SERVICE_COLOR
       const colorId = SERVICE_COLOR[service] || "1";
       const googleEvent = await calendar.events.insert({
-        calendarId: "your-calendar-id",
+        calendarId: "2d74e531ba0ad48e996fd31992596cfef8aaf4787d381bb70b22650c99d9e9cb@group.calendar.google.com",
         sendUpdates: "all", // So Google sends the invite to you (organizer)
         requestBody: {
           summary: `[PENDING] ${service} – ${label} – ${contactFirstName} ${contactLastName}`,
