@@ -1,26 +1,25 @@
 import { google } from "googleapis";
 import type { NextApiRequest, NextApiResponse } from "next";
-
+import { JWT } from "google-auth-library";
 import fs from "fs";
 import path from "path";
 import { db } from "../../lib/firebase-admin";
 import hubspotClient from "../../lib/hubspot";
 import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts";
 
-const oAuth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_OAUTH_CLIENT_ID,
-  process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-  process.env.GOOGLE_OAUTH_REDIRECT_URI
-);
+// ────────────────────────────────────────────────────────────────────────────────
+// 1) Load your Google Service Account JSON from the project root
+// ────────────────────────────────────────────────────────────────────────────────
+const keyPath = path.join(process.cwd(), "google-service-account.json");
+const keyFile = JSON.parse(fs.readFileSync(keyPath, "utf8"));
 
-const ownerEmail = process.env.BUSINESS_OWNER_EMAIL || "abdullahshahzad038@gmail.com";
-
-// ✅ Replace with your real refresh token, ideally stored in an env var or DB
-oAuth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
+// Initialize a JWT client so we can call Google Calendar API
+const jwtClient = new google.auth.JWT({
+  email: keyFile.client_email,
+  key: keyFile.private_key,
+  scopes: ["https://www.googleapis.com/auth/calendar"],
 });
-
-const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+const calendar = google.calendar({ version: "v3", auth: jwtClient });
 
 /**
  * Mapping from service name → colorId for Google Calendar.
@@ -92,6 +91,7 @@ export default async function handler(
     additionalDurationOption?: string; // e.g. "30,45"
   };
 
+  const readableDuration = durationOption || "N/A";
   // ──────────────────────────────────────────────────────────────────────────────
   // 3) Determine which name fields to store in HubSpot:
   // ──────────────────────────────────────────────────────────────────────────────
@@ -130,9 +130,11 @@ export default async function handler(
 
   // Guard: end must be strictly after start
   if (initialEnd.getTime() <= initialStart.getTime()) {
-    return res.status(400).json({
-      message: "Invalid time range: endTime must be after startTime.",
-    });
+    return res
+      .status(400)
+      .json({
+        message: "Invalid time range: endTime must be after startTime.",
+      });
   }
 
   // ──────────────────────────────────────────────────────────────────────────────
@@ -208,6 +210,9 @@ export default async function handler(
     type EventSpan = { dayStart: Date; dayEnd: Date; label: string };
     const allEventSpans: EventSpan[] = [];
 
+
+
+
     // 1) Main series logic
     if (daysOfWeek.length > 0) {
       const durationMs = initialEnd.getTime() - initialStart.getTime();
@@ -229,7 +234,7 @@ export default async function handler(
         allEventSpans.push({
           dayStart: eventStart,
           dayEnd: eventEnd,
-          label: `Main (${dow})`,
+          label: readableDuration,
         });
       }
     } else {
@@ -243,7 +248,7 @@ export default async function handler(
           allEventSpans.push({
             dayStart,
             dayEnd,
-            label: `Main (Day ${i + 1})`,
+            label: readableDuration, 
           });
         }
       }
@@ -289,6 +294,7 @@ export default async function handler(
     };
     const createdEvents: CreatedEvent[] = [];
 
+
     for (let i = 0; i < allEventSpans.length; i++) {
       const { dayStart, dayEnd, label } = allEventSpans[i];
 
@@ -296,7 +302,6 @@ export default async function handler(
       const descriptionLines = [
         `${label} for ${contactFirstName} ${contactLastName} (${email})`,
         `Service: ${service}`,
-        `Duration Option: ${durationOption || "N/A"}`,
       ];
       if (phone) descriptionLines.push(`Phone: ${phone}`);
       if (message) descriptionLines.push(`Message: ${message}`);
@@ -304,28 +309,20 @@ export default async function handler(
 
       // 1) Create Google Calendar event — now with colorId from SERVICE_COLOR
       const colorId = SERVICE_COLOR[service] || "1";
+      
+      const summary = `${service} – ${readableDuration} – ${contactFirstName} ${contactLastName}`;
 
       const googleEvent = await calendar.events.insert({
         calendarId:
-          "2d74e531ba0ad48e996fd31992596cfef8aaf4787d381bb70b22650c99d9e9cb@group.calendar.google.com",
-        sendUpdates: "all",
+          "5a2befffb6957b0aebedfb8653895c19af4d28d3ba5179a02fb6846ced20b3eb@group.calendar.google.com",
         requestBody: {
-          summary: `[PENDING] ${service} – ${label} – ${contactFirstName} ${contactLastName}`,
+          summary,
           description: descriptionText,
           start: { dateTime: dayStart.toISOString(), timeZone: "UTC" },
           end: { dateTime: dayEnd.toISOString(), timeZone: "UTC" },
           colorId,
-          status: "tentative",
-
-          // 🚫 Do NOT add the client here
-          attendees: [
-            {
-              email: ownerEmail, // ✅ your own email
-            },
-          ],
         },
       });
-
       const eventId = googleEvent.data.id;
       if (!eventId) {
         throw new Error(
@@ -352,7 +349,7 @@ export default async function handler(
           end: dayEnd.toISOString(),
           message: message || "",
           label,
-          status: "pending",
+          status: "scheduled",
           createdAt: new Date().toISOString(),
           hubspotContactId: contactId,
         });
@@ -361,7 +358,7 @@ export default async function handler(
       const DEAL_STAGE_ID = "1474904005"; // ← your actual Deal‐stage ID
       const dealResponse = await hubspotClient.crm.deals.basicApi.create({
         properties: {
-          dealname: `${service} (${label}) – ${contactFirstName} ${contactLastName} @ ${dayStart.toLocaleString()}`,
+          dealname: summary,
           pipeline: "default",
           dealstage: DEAL_STAGE_ID,
           closedate: dayEnd.toISOString(),
@@ -411,4 +408,3 @@ export default async function handler(
       .json({ message: "Failed to create booking series." });
   }
 }
-

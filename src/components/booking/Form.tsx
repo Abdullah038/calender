@@ -29,36 +29,35 @@ const SERVICES = [
 
 const FORM_CLASS = " bg-secondaryColor mx-2 p-6 rounded-lg shadow-md";
 
-// ─── SERVICE NOTES ──────────────────────────────────────────────────────────────
-type ServiceType = (typeof SERVICES)[number]["name"];
 
+// At the top of your file (e.g. src/app/page.tsx or wherever you keep SERVICE_NOTES)
 const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
   "Dog Walking": (
     <div className="space-y-4">
-      <p>Rates and scheduling for our Dog Walking service:</p>
+      <p>
+        Rates and scheduling for our Dog Walking service:
+      </p>
       <ul className="list-disc list-inside space-y-1">
         <li>Rates may be subject to change without prior notice.</li>
         <li>All prices are subject to HST.</li>
       </ul>
       <p>
-        <strong>Important:</strong> For multiple dogs or a customized quote,
-        please contact us directly. We&apos;re committed to giving every pup an
-        excellent outdoor experience.
+        <strong>Important:</strong> For multiple dogs or a customized quote, please contact us directly. We’re committed to giving every pup an excellent outdoor experience.
       </p>
     </div>
   ),
 
   "Drop-In Visits": (
     <div className="space-y-4">
-      <p>Our Drop-In Visits include feeding, playtime, and home check-ins:</p>
+      <p>
+        Our Drop-In Visits include feeding, playtime, and home check-ins:
+      </p>
       <ul className="list-disc list-inside space-y-1">
         <li>All pricing is subject to HST and may change without notice.</li>
         <li>Additional fees apply for more than one pet.</li>
       </ul>
       <p>
-        <strong>Need special accommodations?</strong> Let us know if your pet
-        requires medication or extra attention. We look forward to caring for
-        your furry friend!
+        <strong>Need special accommodations?</strong> Let us know if your pet requires medication or extra attention. We look forward to caring for your furry friend!
       </p>
     </div>
   ),
@@ -66,8 +65,7 @@ const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
   Daycare: (
     <div className="space-y-4">
       <p>
-        Please note that we only accept dogs under <strong>30lbs</strong> for
-        this service.
+        Please note that we only accept dogs under <strong>30lbs</strong> for this service.
       </p>
       <ul className="list-disc list-inside space-y-1">
         <li>All pricing is subject to applicable taxes.</li>
@@ -75,110 +73,93 @@ const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
         <li>Please review our policy page for more information</li>
       </ul>
       <p>
-        <strong>Questions?</strong> For any additional dogs or customized quote
-        or any further inquiries, feel free to contact us directly. We look
-        forward to providing excellent care for your furry companion.
+        <strong>Questions?</strong> For any additional dogs or customized quote or any further inquiries, feel free to contact us directly. We look forward to providing excellent care for your furry companion.
       </p>
     </div>
   ),
 
-  "House Sitting": (
-    <div className="space-y-4">
-      <p>
-        Our House Sitting service provides in-home overnight care so your dog
-        feels safe and comfortable while you&apos;re away.
-      </p>
-      <ul className="list-disc list-inside space-y-1">
-        <li>
-          <strong>Pricing:</strong> $70 + HST per night (24-hour period).
-          <br />
-          This includes staying overnight in your home, feeding, regular walks,
-          playtime, and providing companionship and security for your dog.
-        </li>
+"House Sitting": (
+  <div className="space-y-4">
+    <p>
+      Our House Sitting service provides in-home overnight care so your dog feels safe and comfortable while you're away.
+    </p>
 
-        <li>
-          <strong>Extended Hours:</strong>
-          <ul className="list-disc list-inside ml-5 space-y-1">
-            <li>
-              An additional $35 will be charged for any extension beyond the
-              24-hour period upto 8 hours.
-            </li>
-            <li>
-              An additional $70 (full price) will be charged for any extension
-              that is beyond the 24 hour period over 8 hours.
-            </li>
-          </ul>
-        </li>
+    <ul className="list-disc list-inside space-y-1">
+      <li>
+        <strong>Pricing:</strong> $70 + HST per night (24-hour period).
+        <br />
+        This includes staying overnight in your home, feeding, regular walks, playtime, and providing companionship and security for your dog.
+      </li>
 
-        <li>
-          <strong>Second Dog Discount:</strong> If you have two dogs that
-          require house sitting services, the rate for the second dog will be
-          discounted to $55 per night for a 24-hour period.
-        </li>
-        <li>All pricing is subject to applicable taxes.</li>
-        <li>Rates may be subject to change without prior notice.</li>
-        <li>
-          A deposit or prepayment may be required to secure your house sitting
-          reservation.
-        </li>
-        <li>
-          Additional services, such as watering plants or bringing in mail, may
-          be available at no extra cost. Please discuss your specific
-          requirements when booking.
-        </li>
-      </ul>
+      <li>
+        <strong>Extended Hours:</strong>
+        <ul className="list-disc list-inside ml-5 space-y-1">
+          <li>An additional $35 will be charged for any extension beyond the 24-hour period upto 8 hours.</li>
+          <li>An additional $70 (full price) will be charged for any extension that is beyond the 24 hour period over 8 hours.</li>
+        </ul>
+      </li>
 
-      <p>
-        <strong>Need help?</strong> Reach out to us for a customized quote or
-        if you have any special requests. We&apos;re here to provide top-notch
-        care and peace of mind while you&apos;re away.
-      </p>
-    </div>
-  ),
+      <li>
+        <strong>Second Dog Discount:</strong> If you have two dogs that require house sitting services, the rate for the second dog will be discounted to $55 per night for a 24-hour period.
+      </li>
+
+      <li>All pricing is subject to applicable taxes.</li>
+      <li>Rates may be subject to change without prior notice.</li>
+      <li>
+        A deposit or prepayment may be required to secure your house sitting reservation.
+      </li>
+      <li>
+        Additional services, such as watering plants or bringing in mail, may be available at no extra cost. Please discuss your specific requirements when booking.
+      </li>
+    </ul>
+
+    <p>
+      <strong>Need help?</strong> Reach out to us for a customized quote or if you have any special requests. We're here to provide top-notch care and peace of mind while you're away.
+    </p>
+  </div>
+),
+
 
   Boarding: (
     <div className="space-y-4">
-      <p>Our Boarding service offers overnight care, feeding, and playtime:</p>
+      <p>
+        Our Boarding service offers overnight care, feeding, and playtime:
+      </p>
       <ul className="list-disc list-inside space-y-1">
-        <li>$60 +hst per night for a 24-hour period.</li>
         <li>
-          This includes overnight care, feeding, regular walks, playtime, and a
-          comfortable resting area for your dog.
+          $60 +hst per night for a 24-hour period.
         </li>
         <li>
-          Additionally we offer a discount for the second dog at the rate of
-          $45 per night.
+          This includes overnight care, feeding, regular walks, playtime, and a comfortable resting area for your dog.
+        </li>
+        <li>
+      Additionally we offer a discount for the second dog at the rate of $45 per night.
         </li>
         <li>
           <strong>Extended Hours:</strong>
           <ul className="list-disc list-inside ml-5 space-y-1">
-            <li>
-              An additional $30 will be charged for any extension beyond the
-              24-hour period, upto 8 hours.
-            </li>
-            <li>
-              An additional $60 (full price) will be charged for any extension
-              beyond the 24 hour period over 8 hours.
-            </li>
+            <li>An additional $30 will be charged for any extension beyond the 24-hour period, upto 8 hours.</li>
+            <li>An additional $60 (full price) will be charged for any extension beyond the 24 hour period over 8 hours.</li>
           </ul>
         </li>
-        <p>
-          <strong>Please Note:</strong>
-        </p>
+        <p><strong>Please Note:</strong></p>
         <li>Rates may be subject to change without prior notice.</li>
         <li>All pricing is subject to applicable taxes.</li>
-        <li>
-          A deposit or prepayment may be required to secure your dog&apos;s
-          boarding reservation.
-        </li>
+        <li>A deposit or prepayment may be required to secure your dog's boarding reservation.</li>
       </ul>
       <p>
-        <strong>Looking for something special?</strong> Contact us for
-        personalized quotes or multi-pet stays. We&apos;re dedicated to making
-        your dog’s stay as comfortable as possible.
+        <strong>Looking for something special?</strong> Contact us for personalized quotes or multi-pet stays. We’re dedicated to making your dog’s stay as comfortable as possible.
       </p>
     </div>
   ),
+};
+
+
+type ServiceType = (typeof SERVICES)[number]["name"];
+
+type BookingFormProps = {
+  service: ServiceType;
+  onSubmit: (data: FormData) => void;
 };
 
 // ─── Utility Data & Functions ───────────────────────────────────────────────────
@@ -222,7 +203,7 @@ function computeNextWeekdayDates(chosenDate: string): (string | null)[] {
 function formatMd(dateStr: string | null): string {
   if (!dateStr) return "";
   const [_, mm, dd] = dateStr.split("-");
-  return `${Number(mm)}/${Number(dd)}`; // e.g. "6/24"
+  return `${Number(mm)}/${Number(dd)}`;
 }
 
 // ─── WEEKDAY SELECTOR COMPONENT ─────────────────────────────────────────────────
@@ -304,10 +285,6 @@ function WeekdaySelector({ chosenDate, setChosenDate }: WeekdaySelectorProps) {
 }
 
 // ─── DOG WALKING FORM ─────────────────────────────────────────────────────────────
-type BookingFormProps = {
-  service: ServiceType;
-  onSubmit: (data: FormData) => void;
-};
 function DogWalkingForm({ service, onSubmit }: BookingFormProps) {
   const [chosenDate, setChosenDate] = useState<string>("");
   const [additionalIds, setAdditionalIds] = useState<number[]>([]);
@@ -376,6 +353,9 @@ function DogWalkingForm({ service, onSubmit }: BookingFormProps) {
         // ─── Extra fields (“additionalStartTime” / “additionalDurationOption”)
         // come through automatically in FormData if present.
 
+        // NOTE: We removed the “force‐append chosenDate’s weekday” logic entirely here,
+        //      because recurrenceDays checkboxes already handle the weekdays.
+
         onSubmit(data);
       }}
     >
@@ -421,11 +401,11 @@ function DogWalkingForm({ service, onSubmit }: BookingFormProps) {
           <option value="" disabled>
             -- choose one --
           </option>
-          <option value="30">30 min walk $20 +HST</option>
-          <option value="45">45 min walk $27 +HST</option>
-          <option value="60">60 min walk $35 +HST</option>
-          <option value="30_2dogs">2 dogs 30 min walk $35 +HST</option>
-          <option value="60_2dogs">2 dogs 60 min walk $50 +HST</option>
+          <option value="30 min walk $20 +HST">30 min walk $20 +HST</option>
+          <option value="45 min walk $27 +HST">45 min walk $27 +HST</option>
+          <option value="60 min walk $35 +HST">60 min walk $35 +HST</option>
+          <option value="2 dogs 30 min walk $35 +HST">2 dogs 30 min walk $35 +HST</option>
+          <option value="2 dogs 60 min walk $50 +HST">2 dogs 60 min walk $50 +HST</option>
         </select>
       </label>
 
@@ -487,11 +467,11 @@ function DogWalkingForm({ service, onSubmit }: BookingFormProps) {
               <option value="" disabled>
                 -- choose one --
               </option>
-              <option value="30">30 min walk $20 +HST</option>
-              <option value="45">45 min walk $27 +HST</option>
-              <option value="60">60 min walk $35 +HST</option>
-              <option value="30_2dogs">2 dogs 30 min walk $35 +HST</option>
-              <option value="60_2dogs">2 dogs 60 min walk $50 +HST</option>
+              <option value="30 min walk $20 +HST">30 min walk $20 +HST</option>
+              <option value="45 min walk $27 +HST">45 min walk $27 +HST</option>
+              <option value="60 min walk $35 +HST">60 min walk $35 +HST</option>
+              <option value="2 dogs 30 min walk $35 +HST">2 dogs 30 min walk $35 +HST</option>
+              <option value="2 dogs 60 min walk $50 +HST">2 dogs 60 min walk $50 +HST</option>
             </select>
           </label>
         </div>
@@ -516,7 +496,7 @@ function DogWalkingForm({ service, onSubmit }: BookingFormProps) {
   );
 }
 
-// ─── HOUSE SITTING FORM (unchanged, minus apostrophes) ─────────────────────────
+// ─── HOUSE SITTING FORM (unchanged) ────────────────────────────────────────────
 function HouseSittingForm({ service, onSubmit }: BookingFormProps) {
   return (
     <form
@@ -634,7 +614,7 @@ function HouseSittingForm({ service, onSubmit }: BookingFormProps) {
   );
 }
 
-// ─── DROP-IN VISITS FORM ─────────────────────────────────────────────────────────
+// ─── DROP-IN VISITS FORM ───────────────────────────────────────────────────────────
 function DropInVisitsForm({ service, onSubmit }: BookingFormProps) {
   const [chosenDate, setChosenDate] = useState<string>("");
   const [additionalIds, setAdditionalIds] = useState<number[]>([]);
@@ -701,6 +681,13 @@ function DropInVisitsForm({ service, onSubmit }: BookingFormProps) {
         data.append("durationOption", String(durationMinutes));
         data.append("endTime", endTimeStr);
 
+        // WEEKDAY SELECTOR (date input + checkboxes)
+        // NOTE: We removed “force‐inject chosenDate’s weekday” logic:
+        // recurrenceDays checkboxes handle the weekdays.
+
+        // AdditionalStartTime & AdditionalDurationOption fields
+        // come through if present.
+
         onSubmit(data);
       }}
     >
@@ -746,11 +733,11 @@ function DropInVisitsForm({ service, onSubmit }: BookingFormProps) {
           <option value="" disabled>
             -- choose one --
           </option>
-          <option value="30">30 min drop-in visit $25 +HST</option>
-          <option value="45">45 min drop-in visit $30 +HST</option>
-          <option value="60">60 min drop-in visit $35 +HST</option>
-          <option value="30_2dogs">2 dogs 30 min drop-in $40 +HST</option>
-          <option value="60_2dogs">2 dogs 60 min drop-in $50 +HST</option>
+          <option value="30 min drop-in visit $25 +HST">30 min drop-in visit $25 +HST</option>
+          <option value="45 min drop-in visit $30 +HST">45 min drop-in visit $30 +HST</option>
+          <option value="60 min drop-in visit $35 +HST">60 min drop-in visit $35 +HST</option>
+          <option value="2 dogs 30 min drop-in $40 +HST">2 dogs 30 min drop-in $40 +HST</option>
+          <option value="2 dogs 60 min drop-in $50 +HST">2 dogs 60 min drop-in $50 +HST</option>
         </select>
       </label>
 
@@ -812,11 +799,11 @@ function DropInVisitsForm({ service, onSubmit }: BookingFormProps) {
               <option value="" disabled>
                 -- choose one --
               </option>
-              <option value="30">30 min drop-in visit $25 +HST</option>
-              <option value="45">45 min drop-in visit $30 +HST</option>
-              <option value="60">60 min drop-in visit $35 +HST</option>
-              <option value="30_2dogs">2 dogs 30 min drop-in $40 +HST</option>
-              <option value="60_2dogs">2 dogs 60 min drop-in $50 +HST</option>
+              <option value="30 min drop-in visit $25 +HST">30 min drop-in visit $25 +HST</option>
+              <option value="45 min drop-in visit $30 +HST">45 min drop-in visit $30 +HST</option>
+              <option value="60 min drop-in visit $35 +HST">60 min drop-in visit $35 +HST</option>
+              <option value="2 dogs 30 min drop-in $40 +HST">2 dogs 30 min drop-in $40 +HST</option>
+              <option value="2 dogs 60 min drop-in $50 +HST">2 dogs 60 min drop-in $50 +HST</option>
             </select>
           </label>
         </div>
@@ -999,9 +986,7 @@ export function DaycareForm({ service, onSubmit }: BookingFormProps) {
         if (durationOption && durationOption !== "custom") {
           const hoursToAdd = parseInt(durationOption, 10);
           const [sh, sm] = startTimeStr.split(":").map((x) => parseInt(x, 10));
-          const [y, M, d] = startDateStr
-            .split("-")
-            .map((x) => parseInt(x, 10));
+          const [y, M, d] = startDateStr.split("-").map((x) => parseInt(x, 10));
           const startDateObj = new Date(y, M - 1, d, sh, sm);
           const endDateObj = new Date(
             startDateObj.getTime() + hoursToAdd * 60 * 60000
@@ -1017,6 +1002,10 @@ export function DaycareForm({ service, onSubmit }: BookingFormProps) {
         data.append("service", service);
         data.append("durationOption", durationOption);
         data.append("endTime", endTimeStrValue);
+
+        // WEEKDAY SELECTOR (date input + checkboxes)
+        // NOTE: We removed “force‐inject chosenDate’s weekday” logic:
+        // recurrenceDays checkboxes handle the weekdays.
 
         onSubmit(data);
       }}
@@ -1075,10 +1064,10 @@ export function DaycareForm({ service, onSubmit }: BookingFormProps) {
           <option value="" disabled>
             -- choose duration --
           </option>
-          <option value="8">8 Hours $35 +HST</option>
-          <option value="9">9 Hours $40 +HST</option>
-          <option value="10">10 Hours $50 +HST</option>
-          <option value="12">12 Hours $60 +HST</option>
+          <option value="8 Hours $35 +HST">8 Hours $35 +HST</option>
+          <option value="9 Hours $40 +HST">9 Hours $40 +HST</option>
+          <option value="10 Hours $50 +HST">10 Hours $50 +HST</option>
+          <option value="12 Hours $60 +HST">12 Hours $60 +HST</option>
           <option value="custom">Custom End Time</option>
         </select>
       </label>
@@ -1186,7 +1175,7 @@ const Home: NextPage = () => {
       <div className="max-w-primaryMaxWidth mx-auto rounded-2xl p-8">
         <div>
           <h1 className="text-2xl font-extrabold text-center mb-6">
-            PICK YOUR PUP&apos;S ADVENTURE
+            PICK YOUR PUP'S ADVENTURE
           </h1>
 
           {/* 1) Service Buttons */}
@@ -1200,17 +1189,18 @@ const Home: NextPage = () => {
                   setFeedback(null);
                   setBookingResults(null);
                 }}
+                
               >
                 <Image
                   src={imgSrc}
                   alt={name}
                   width={150}
                   height={150}
-                  className="rounded-[40px]"
+                  className="rounded-[40px] "
                 />
                 <button
                   disabled={isSubmitting}
-                  className={`px-2 py-3 rounded-xl font-bold transition-shadow duration-150 ${
+                  className={`px-2 py-3  rounded-xl font-bold transition-shadow duration-150 ${
                     selectedService === name
                       ? "bg-primaryColor shadow-lg text-white"
                       : " text-gray-800"
@@ -1224,7 +1214,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <div className="w-full">
+          <div className="w-full ">
             {/* 2) Feedback Message */}
             {feedback && (
               <div
@@ -1310,21 +1300,25 @@ const Home: NextPage = () => {
               </div>
             )}
           </div>
+          {/* …inside your JSX, next to the forms… */}
 
-          <div className="w-full md:w-1/2">
-            {selectedService ? (
-              <div className="p-6 mb-6 bg-primaryColor80 rounded-md">
-                <h2 className="text-xl font-semibold mb-4">Please Note:</h2>
-                <div className="text-sm text-gray-700 leading-relaxed">
-                  {SERVICE_NOTES_JSX[selectedService]}
-                </div>
-              </div>
-            ) : (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-gray-600 text-center">
-                Select a service above to see important details before booking.
-              </div>
-            )}
-          </div>
+<div className="w-full md:w-1/2">
+  {selectedService ? (
+    <div className="p-6 mb-6 bg-primaryColor80 rounded-md ">
+      <h2 className="text-xl font-semibold mb-4">Please Note:</h2>
+      <div className="text-sm text-gray-700 leading-relaxed">
+        {SERVICE_NOTES_JSX[selectedService]}
+      </div>
+    </div>
+  ) : (
+    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-gray-600 text-center">
+      Select a service above to see important details before booking.
+    </div>
+  )}
+</div>
+
+
+
         </div>
       </div>
     </div>

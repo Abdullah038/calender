@@ -1,12 +1,13 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+// lib/firebase-admin.ts
+import admin from 'firebase-admin';
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!);
+const serviceAccount = require('../../firebase-service-account.json'); // adjust path as needed
 
-if (!getApps().length) {
-  initializeApp({
-    credential: cert(serviceAccount),
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
   });
 }
 
-export const db = getFirestore();
+const db = admin.firestore();
+export { db };
