@@ -16,14 +16,15 @@ const keyFile = JSON.parse(
 
 
 
-// Initialize a JWT client so we can call Google Calendar API
 const jwtClient = new google.auth.JWT({
-  email: keyFile.client_email,
-  key: keyFile.private_key,
-  scopes: ["https://www.googleapis.com/auth/calendar"],
-
+  email:      keyFile.client_email,
+  key:        keyFile.private_key,
+  scopes:     ["https://www.googleapis.com/auth/calendar"],
+  subject:    process.env.CALENDAR_OWNER_EMAIL,    // ← the email address of the calendar you’re writing to
 });
+
 const calendar = google.calendar({ version: "v3", auth: jwtClient });
+
 
 /**
  * Mapping from service name → colorId for Google Calendar.
