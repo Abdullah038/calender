@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { useState } from "react";
 import type { NextPage } from "next";
@@ -81,7 +82,7 @@ const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
 "House Sitting": (
   <div className="space-y-4">
     <p>
-      Our House Sitting service provides in-home overnight care so your dog feels safe and comfortable while you're away.
+      Our House Sitting service provides in-home overnight care so your dog feels safe and comfortable while you&apos;re away.
     </p>
 
     <ul className="list-disc list-inside space-y-1">
@@ -114,7 +115,7 @@ const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
     </ul>
 
     <p>
-      <strong>Need help?</strong> Reach out to us for a customized quote or if you have any special requests. We're here to provide top-notch care and peace of mind while you're away.
+      <strong>Need help?</strong> Reach out to us for a customized quote or if you have any special requests. We&apos;re here to provide top-notch care and peace of mind while you&apos;re away.
     </p>
   </div>
 ),
@@ -145,7 +146,7 @@ const SERVICE_NOTES_JSX: Record<ServiceType, JSX.Element> = {
         <p><strong>Please Note:</strong></p>
         <li>Rates may be subject to change without prior notice.</li>
         <li>All pricing is subject to applicable taxes.</li>
-        <li>A deposit or prepayment may be required to secure your dog's boarding reservation.</li>
+        <li>A deposit or prepayment may be required to secure your dog&apos;s boarding reservation.</li>
       </ul>
       <p>
         <strong>Looking for something special?</strong> Contact us for personalized quotes or multi-pet stays. We’re dedicated to making your dog’s stay as comfortable as possible.
@@ -1175,7 +1176,7 @@ const Home: NextPage = () => {
       <div className="max-w-primaryMaxWidth mx-auto rounded-2xl p-8">
         <div>
           <h1 className="text-2xl font-extrabold text-center mb-6">
-            PICK YOUR PUP'S ADVENTURE
+            PICK YOUR PUP&apos;S ADVENTURE
           </h1>
 
           {/* 1) Service Buttons */}
