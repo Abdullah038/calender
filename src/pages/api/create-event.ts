@@ -20,7 +20,7 @@ const jwtClient = new google.auth.JWT({
   email:      keyFile.client_email,
   key:        keyFile.private_key,
   scopes:     ["https://www.googleapis.com/auth/calendar"],
-  subject:    process.env.CALENDAR_OWNER_EMAIL,    // ← the email address of the calendar you’re writing to
+  subject:    "calendar-booking-service@booking-form-461215.iam.gserviceaccount.com",    // ← the email address of the calendar you’re writing to
 });
 
 const calendar = google.calendar({ version: "v3", auth: jwtClient });
