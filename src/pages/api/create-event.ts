@@ -10,8 +10,9 @@ import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts
 // ────────────────────────────────────────────────────────────────────────────────
 // 1) Load your Google Service Account JSON from the project root
 // ────────────────────────────────────────────────────────────────────────────────
-const keyPath = path.join(process.cwd(), "google-service-account.json");
-const keyFile = JSON.parse(fs.readFileSync(keyPath, "utf8"));
+const keyFile = JSON.parse(
+  Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT!, 'base64').toString('utf8')
+);
 
 
 
