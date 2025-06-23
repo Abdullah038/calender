@@ -1,7 +1,9 @@
 // lib/firebase-admin.ts
 import admin from 'firebase-admin';
 
-const serviceAccount = require('../../firebase-service-account.json'); // adjust path as needed
+const serviceAccount = JSON.parse(
+  Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT!, 'base64').toString('utf8')
+);
 
 if (!admin.apps.length) {
   admin.initializeApp({
