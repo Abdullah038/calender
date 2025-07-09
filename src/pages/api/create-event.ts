@@ -1,8 +1,10 @@
-import { google } from "googleapis";
+// import { google } from "googleapis";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { JWT } from "google-auth-library";
-import fs from "fs";
-import path from "path";
+// import { JWT } from "google-auth-library";
+// import fs from "fs";
+// import path from "path";
+import { calendar } from "../../lib/google-calendar";
+
 import { db } from "../../lib/firebase-admin";
 import hubspotClient from "../../lib/hubspot";
 import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts";
@@ -10,16 +12,7 @@ import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts
 // ────────────────────────────────────────────────────────────────────────────────
 // 1) Load your Google Service Account JSON from the project root
 // ────────────────────────────────────────────────────────────────────────────────
-const keyPath = path.join(process.cwd(), "google-service-account.json");
-const keyFile = JSON.parse(fs.readFileSync(keyPath, "utf8"));
 
-// Initialize a JWT client so we can call Google Calendar API
-const jwtClient = new google.auth.JWT({
-  email: keyFile.client_email,
-  key: keyFile.private_key,
-  scopes: ["https://www.googleapis.com/auth/calendar"],
-});
-const calendar = google.calendar({ version: "v3", auth: jwtClient });
 
 /**
  * Mapping from service name → colorId for Google Calendar.
