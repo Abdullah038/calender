@@ -10,32 +10,27 @@ import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts
 // ────────────────────────────────────────────────────────────────────────────────
 // 1) Load your Google Service Account JSON from the project root
 // ────────────────────────────────────────────────────────────────────────────────
-const keyFile = JSON.parse(
-  Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT!, 'base64').toString('utf8')
-);
+const keyPath = path.join(process.cwd(), "google-service-account.json");
+const keyFile = JSON.parse(fs.readFileSync(keyPath, "utf8"));
 
-
-
+// Initialize a JWT client so we can call Google Calendar API
 const jwtClient = new google.auth.JWT({
-  email:      keyFile.client_email,
-  key:        keyFile.private_key,
-  scopes:     ["https://www.googleapis.com/auth/calendar"],
-  subject:    "calendar-booking-service@booking-form-461215.iam.gserviceaccount.com",    // ← the email address of the calendar you’re writing to
+  email: keyFile.client_email,
+  key: keyFile.private_key,
+  scopes: ["https://www.googleapis.com/auth/calendar"],
 });
-
 const calendar = google.calendar({ version: "v3", auth: jwtClient });
-
 
 /**
  * Mapping from service name → colorId for Google Calendar.
  * Feel free to adjust these numeric strings (1–11) to match your preferred palette.
  */
 const SERVICE_COLOR: Record<string, string> = {
-  "Dog Walking": "2", // green
-  "House Sitting": "5", // yellow
-  "Drop-In Visits": "6", // purple
-  Boarding: "7", // red
-  Daycare: "10", // orange
+  "Dog Walking": "2",     // green
+  "House Sitting": "5",   // yellow
+  "Drop-In Visits": "6",  // purple
+  "Boarding": "7",        // red
+  "Daycare": "10"         // orange
 };
 
 export default async function handler(
@@ -83,20 +78,19 @@ export default async function handler(
     fullName?: string;
     email: string;
     phone?: string;
-    startDate: string; // "YYYY-MM-DD"
-    startTime: string; // "HH:mm"
-    endDate?: string; // "YYYY-MM-DD"
-    endTime: string; // "HH:mm"
+    startDate: string;    // "YYYY-MM-DD"
+    startTime: string;    // "HH:mm"
+    endDate?: string;     // "YYYY-MM-DD"
+    endTime: string;      // "HH:mm"
     service: string;
     durationOption?: string;
-    recurrenceDays?: string; // e.g. "1,3,5"
-    recurrenceCount?: string; // e.g. "3"
+    recurrenceDays?: string;         // e.g. "1,3,5"
+    recurrenceCount?: string;        // e.g. "3"
     message?: string;
-    additionalStartTime?: string; // e.g. "10:00,14:00"
+    additionalStartTime?: string;    // e.g. "10:00,14:00"
     additionalDurationOption?: string; // e.g. "30,45"
   };
 
-  const readableDuration = durationOption || "N/A";
   // ──────────────────────────────────────────────────────────────────────────────
   // 3) Determine which name fields to store in HubSpot:
   // ──────────────────────────────────────────────────────────────────────────────
@@ -106,40 +100,24 @@ export default async function handler(
   // ──────────────────────────────────────────────────────────────────────────────
   // 4) Build JS Date objects for the *first* occurrence:
   // ──────────────────────────────────────────────────────────────────────────────
-  const [startHour, startMinute] = startTime
-    .split(":")
-    .map((x) => parseInt(x, 10));
+  const [startHour, startMinute] = startTime.split(":").map((x) => parseInt(x, 10));
   const [endHour, endMinute] = endTime.split(":").map((x) => parseInt(x, 10));
 
   const [startYear, startMonth, startDay] = startDate
     .split("-")
     .map((x) => parseInt(x, 10));
-  const initialStart = new Date(
-    startYear,
-    startMonth - 1,
-    startDay,
-    startHour,
-    startMinute
-  );
+  const initialStart = new Date(startYear, startMonth - 1, startDay, startHour, startMinute);
 
   const [endYear, endMonth, endDay] = (endDate ?? startDate)
     .split("-")
     .map((x) => parseInt(x, 10));
-  const initialEnd = new Date(
-    endYear,
-    endMonth - 1,
-    endDay,
-    endHour,
-    endMinute
-  );
+  const initialEnd = new Date(endYear, endMonth - 1, endDay, endHour, endMinute);
 
   // Guard: end must be strictly after start
   if (initialEnd.getTime() <= initialStart.getTime()) {
     return res
       .status(400)
-      .json({
-        message: "Invalid time range: endTime must be after startTime.",
-      });
+      .json({ message: "Invalid time range: endTime must be after startTime." });
   }
 
   // ──────────────────────────────────────────────────────────────────────────────
@@ -174,21 +152,20 @@ export default async function handler(
     // ────────────────────────────────────────────────────────────────────────────
     let contactId: string | undefined = undefined;
     try {
-      const searchResponse =
-        await hubspotClient.crm.contacts.searchApi.doSearch({
-          filterGroups: [
-            {
-              filters: [
-                {
-                  propertyName: "email",
-                  operator: FilterOperatorEnum.Eq,
-                  value: email,
-                },
-              ],
-            },
-          ],
-          properties: ["firstname", "lastname", "email", "phone"],
-        });
+      const searchResponse = await hubspotClient.crm.contacts.searchApi.doSearch({
+        filterGroups: [
+          {
+            filters: [
+              {
+                propertyName: "email",
+                operator: FilterOperatorEnum.Eq,
+                value: email,
+              },
+            ],
+          },
+        ],
+        properties: ["firstname", "lastname", "email", "phone"],
+      });
       if (searchResponse.results.length > 0) {
         contactId = searchResponse.results[0].id;
       }
@@ -215,9 +192,6 @@ export default async function handler(
     type EventSpan = { dayStart: Date; dayEnd: Date; label: string };
     const allEventSpans: EventSpan[] = [];
 
-
-
-
     // 1) Main series logic
     if (daysOfWeek.length > 0) {
       const durationMs = initialEnd.getTime() - initialStart.getTime();
@@ -239,7 +213,7 @@ export default async function handler(
         allEventSpans.push({
           dayStart: eventStart,
           dayEnd: eventEnd,
-          label: readableDuration,
+          label: `Main (${dow})`,
         });
       }
     } else {
@@ -253,23 +227,18 @@ export default async function handler(
           allEventSpans.push({
             dayStart,
             dayEnd,
-            label: readableDuration, 
+            label: `Main (Day ${i + 1})`,
           });
         }
       }
     }
 
     // 2) Additional‐time blocks on the same startDate
-    if (
-      extraStarts.length > 0 &&
-      extraDurations.length === extraStarts.length
-    ) {
+    if (extraStarts.length > 0 && extraDurations.length === extraStarts.length) {
       // We always have a startDate string (YYYY-MM-DD)
       const [y, m, d] = startDate.split("-").map((x) => parseInt(x, 10));
       for (let idx = 0; idx < extraStarts.length; idx++) {
-        const [eh, emin] = extraStarts[idx]
-          .split(":")
-          .map((x) => parseInt(x, 10));
+        const [eh, emin] = extraStarts[idx].split(":").map((x) => parseInt(x, 10));
         const minutesToAdd = parseInt(extraDurations[idx], 10); // e.g. “30” means add 30 minutes
         const eventStart = new Date(y, m - 1, d, eh, emin);
         const eventEnd = new Date(eventStart.getTime() + minutesToAdd * 60000);
@@ -295,10 +264,9 @@ export default async function handler(
       totalOccurrences: number;
       service: string;
       start: string; // ISO
-      end: string; // ISO
+      end: string;   // ISO
     };
     const createdEvents: CreatedEvent[] = [];
-
 
     for (let i = 0; i < allEventSpans.length; i++) {
       const { dayStart, dayEnd, label } = allEventSpans[i];
@@ -307,25 +275,23 @@ export default async function handler(
       const descriptionLines = [
         `${label} for ${contactFirstName} ${contactLastName} (${email})`,
         `Service: ${service}`,
+        `Duration Option: ${durationOption || "N/A"}`,
       ];
       if (phone) descriptionLines.push(`Phone: ${phone}`);
       if (message) descriptionLines.push(`Message: ${message}`);
       const descriptionText = descriptionLines.join("\n");
 
       // 1) Create Google Calendar event — now with colorId from SERVICE_COLOR
-      const colorId = SERVICE_COLOR[service] || "1";
-      
-      const summary = `${service} – ${readableDuration} – ${contactFirstName} ${contactLastName}`;
-
+      const colorId = SERVICE_COLOR[service] || "1"; 
       const googleEvent = await calendar.events.insert({
         calendarId:
-          "5a2befffb6957b0aebedfb8653895c19af4d28d3ba5179a02fb6846ced20b3eb@group.calendar.google.com",
+          "2d74e531ba0ad48e996fd31992596cfef8aaf4787d381bb70b22650c99d9e9cb@group.calendar.google.com",
         requestBody: {
-          summary,
+          summary: `${service} – ${label} – ${contactFirstName} ${contactLastName}`,
           description: descriptionText,
           start: { dateTime: dayStart.toISOString(), timeZone: "UTC" },
           end: { dateTime: dayEnd.toISOString(), timeZone: "UTC" },
-          colorId,
+          colorId, 
         },
       });
       const eventId = googleEvent.data.id;
@@ -336,34 +302,31 @@ export default async function handler(
       }
 
       // 2) Save to Firestore under “bookings/<eventId>”
-      await db
-        .collection("bookings")
-        .doc(eventId)
-        .set({
-          eventId,
-          email,
-          phone: phone || null,
-          firstName: contactFirstName,
-          lastName: contactLastName,
-          fullName: fullName || null,
-          service,
-          occurrenceIndex: i + 1,
-          totalOccurrences: allEventSpans.length,
-          durationOption: durationOption || null,
-          start: dayStart.toISOString(),
-          end: dayEnd.toISOString(),
-          message: message || "",
-          label,
-          status: "scheduled",
-          createdAt: new Date().toISOString(),
-          hubspotContactId: contactId,
-        });
+      await db.collection("bookings").doc(eventId).set({
+        eventId,
+        email,
+        phone: phone || null,
+        firstName: contactFirstName,
+        lastName: contactLastName,
+        fullName: fullName || null,
+        service,
+        occurrenceIndex: i + 1,
+        totalOccurrences: allEventSpans.length,
+        durationOption: durationOption || null,
+        start: dayStart.toISOString(),
+        end: dayEnd.toISOString(),
+        message: message || "",
+        label,
+        status: "scheduled",
+        createdAt: new Date().toISOString(),
+        hubspotContactId: contactId,
+      });
 
       // 3) Create HubSpot Deal for this occurrence
       const DEAL_STAGE_ID = "1474904005"; // ← your actual Deal‐stage ID
       const dealResponse = await hubspotClient.crm.deals.basicApi.create({
         properties: {
-          dealname: summary,
+          dealname: `${service} (${label}) – ${contactFirstName} ${contactLastName} @ ${dayStart.toLocaleString()}`,
           pipeline: "default",
           dealstage: DEAL_STAGE_ID,
           closedate: dayEnd.toISOString(),
@@ -375,19 +338,15 @@ export default async function handler(
         },
       });
       const dealId = dealResponse.id!;
-      await hubspotClient.crm.associations.batchApi.create(
-        "deals",
-        "contacts",
-        {
-          inputs: [
-            {
-              _from: { id: dealId },
-              to: { id: contactId! },
-              type: "deal_to_contact",
-            },
-          ],
-        }
-      );
+      await hubspotClient.crm.associations.batchApi.create("deals", "contacts", {
+        inputs: [
+          {
+            _from: { id: dealId },
+            to: { id: contactId! },
+            type: "deal_to_contact",
+          },
+        ],
+      });
 
       // 4) Add to our `createdEvents` array
       createdEvents.push({
@@ -408,8 +367,6 @@ export default async function handler(
     });
   } catch (err) {
     console.error("Error in booking handler:", err);
-    return res
-      .status(500)
-      .json({ message: "Failed to create booking series." });
+    return res.status(500).json({ message: "Failed to create booking series." });
   }
 }
