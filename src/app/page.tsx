@@ -5,6 +5,7 @@ import BookingForm from "@/components/homepage/BookingForm"
 import Categories from "@/components/homepage/Categories"
 import Faqs from "@/components/homepage/Faqs"
 import HeroSection from "@/components/homepage/HeroSection"
+import SeaPawsRescue from "@/components/homepage/SeaPawsRescue";
 import Services from "@/components/homepage/Services"
 import Testimonials from "@/components/homepage/Testimonials"
 import ScrollToHashClient from "@/components/ScrollToHashClient";
@@ -28,6 +29,7 @@ const HomePage = () => {
     <Services />
     <AboutUs />
     <Categories />
+    <SeaPawsRescue />
     <Faqs />
     </>
   )
