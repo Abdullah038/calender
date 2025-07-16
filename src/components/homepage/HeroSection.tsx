@@ -54,23 +54,29 @@ const HeroSection = () => {
               </p>
               <div className="flex  flex-row w-full justify-center gap-10 items-center pb-2">
                 <div className="md:flex gap-3 hidden ">
+                  <Link href="https://www.facebook.com/barksandbeachesco" target="_blank">
                   <Image
                     src="/facebook.png"
                     alt="Facebook"
                     width={25}
                     height={25}
                   />
+                  </Link>
+
+                  <Link href="https://www.instagram.com/barksandbeachesco/" target="_blank">
                   <Image
                     src="/instagram.png"
                     alt="Instagram"
                     width={25}
                     height={25}
                   />
+                </Link>
                 </div>
 
-                <button className="px-6 py-2 text-xl bg-primaryColor text-white rounded-full">
-                  Book Now
-                </button>
+                
+                <Link href="/Booking" className="px-6 py-2 text-xl bg-primaryColor text-white rounded-full">
+                Book Now
+                </Link>
               </div>
               <Image
                 src="/images/homepage/side-view-of-dog.png"

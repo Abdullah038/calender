@@ -16,19 +16,19 @@ const TESTIMONIALS: Testimonial[] = [
   {
     name: "Tia M.",
     quote:
-      "Amazing experience with Barks and Beaches! This was our first time using a doggy daycare service so we were a little nervous, but Joy and her husband were so kind and patient with our puppy!",
+      "Amazing experience with Barks and Beaches! This was our first time using a doggy daycare service so we were a little nervous, but Joy and her husband were so kind and patient with our puppy! They sent us updates and pictures/videos throughout the day which were always a fun surprise and gave us some peace of mind! We would absolutely use Barks and Beaches again!! :)​",
     rating: 5,
   },
   {
-    name: "Alex J.",
+    name: "Katie-lynn P.",
     quote:
-      "The groomers here are absolutely fantastic. They knew exactly how to calm my old Labrador and sent him home looking like a puppy again!",
+      "We had a great experience with Barks and Beaches. They kept us posted with the updates and pictures of Bruce having fun at the park and going on walks. They were very accommodating and flexible with the schedule and timings. They were gentle and patient with Bruce as he is slow to warm and can be spicy in new situations. We will definitely recommend their services for future. Thank you for taking such great care of Bruce.",
     rating: 5,
   },
   {
-    name: "Priya K.",
+    name: "Penny & Brian B.",
     quote:
-      "Fantastic overnight boarding—daily photo updates gave me so much peace of mind. I’ll be back every time we travel!",
+      "Joy is so lovely! She did a one week house sitting with our 2 Whippets and they all got along famously! We loved getting her daily pictures and update on the boys. They will probably find life pretty dull now that mom and dad are home!! There was a complex medication schedule for our senior Whippet and Joy seemed to handle it with no issues! We would gladly use her again to stay with our boys! They love her!",
     rating: 5,
   },
 ];

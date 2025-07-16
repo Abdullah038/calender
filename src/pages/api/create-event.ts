@@ -1,3 +1,5 @@
+// src/create-event.ts
+
 // import { google } from "googleapis";
 import type { NextApiRequest, NextApiResponse } from "next";
 // import { JWT } from "google-auth-library";
@@ -316,7 +318,7 @@ export default async function handler(
       });
 
       // 3) Create HubSpot Deal for this occurrence
-      const DEAL_STAGE_ID = "1474904005"; // ← your actual Deal‐stage ID
+      const DEAL_STAGE_ID = "appointmentscheduled"; // ← your actual Deal‐stage ID
       const dealResponse = await hubspotClient.crm.deals.basicApi.create({
         properties: {
           dealname: `${service} (${label}) – ${contactFirstName} ${contactLastName} @ ${dayStart.toLocaleString()}`,
