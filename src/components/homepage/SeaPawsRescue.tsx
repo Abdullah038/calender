@@ -50,7 +50,7 @@ export default function SeaPawsRescue() {
                 A voice for the voiceless
               </h2>
               <p className="mb-6 text-sm lg:text-base">
-                At Sea Paws Rescue, we're on a mission to save the lives of
+                At Sea Paws Rescue, we&apos;re on a mission to save the lives of
                 neglected and stray animals. Founded with a passion for animal
                 welfare, our dedicated team works tirelessly to rescue,
                 rehabilitate, and re-home animals in need.
